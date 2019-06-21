@@ -1,0 +1,29 @@
+<div class = "text-converter">
+  <div class="form-group">
+    <input type="text" [(ngModel)]= "this.message.title" value = "title" placeholder="Title">
+    <textarea class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.body" placeholder="Comment.."></textarea>
+  </div>
+
+  <button (click) = "addNote()">Add</button>
+  <div *ngIf="done == true">Message submitted.</div>
+
+  <div *ngIf="this.fileList.length === 0 && !loading">No Messages submitted. Please add messages above!</div>
+  <div *ngIf="this.fileList.length > 0 && !loading">
+    <table class = "table">
+      <tr>
+        <th>Title</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr *ngFor= "let file of fileList">
+        <td (click) = "edit(file)">{{file.title}}</td>
+        <td><i class="fas fa-play-circle" (click)="playAudio(file.filePath)"></i></td>
+        <td><i class="fas fa-trash-alt" (click)="deleteFile(file)"></i></td>
+      </tr>
+    </table>
+  </div>
+  <div *ngIf="loading">
+    Loading..
+  </div>
+
+</div>
