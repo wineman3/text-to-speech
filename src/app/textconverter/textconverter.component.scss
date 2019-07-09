@@ -1,12 +1,38 @@
 .text-converter{
-    background: white;
     border-radius: 20px;
-    border: 10px solid #1a87a8;
+    border: 3px solid black;
     position: absolute;
-    top: 35%;
+    top: 50%;
     left: 50%;
+    background-color: white;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
     padding: 20px;
     
+}
+
+.table-text{
+    padding: 5px;
+}
+
+button {
+    background-color: gray;
+    color: black;
+    border: 1px solid black;
+}
+
+button:hover, button:after, button:active, button:not(:disabled):not(.disabled):active{
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.form-control:focus, input:focus {
+    border-color: gray;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px gray;
+    outline: none;
+}
+button:focus {
+    border: 1px solid gray;
+    box-shadow: none;
 }

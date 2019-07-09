@@ -1,5 +1,5 @@
 import { SpeechService } from './../services/speech.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Message } from '../models/message';
 import { File } from '../models/file';
 import { variables } from '../app.variables';
@@ -21,19 +21,36 @@ export class TextconverterComponent implements OnInit {
   tempIndex;
   playing = false;
   loading = true;
+  emptyTitle = false;
+  emptyBody  = false;
+  sameTitle = false;
   constructor(private speech: SpeechService) {}
 
   addNote() {
-    this.speech.postData(this.message).subscribe((data: Array<object>) => {
-      console.log(this.message);
-      this.done = true;
-      this.message.FileName = this.message.title.replace(/\s/g, '') + '.mp3';
-      this.getFiles();
-     });
+    // check if title and body are empty
+    this.sameTitle = this.fileList.some(x => x.title === this.message.title);
+
+    this.emptyTitle = this.isEmpty(this.message.title);
+    this.emptyBody = this.isEmpty(this.message.body);
+    // if they are not empty, add them to the database
+    if (!this.emptyBody && !this.emptyTitle && !this.sameTitle) {
+      this.speech.postData(this.message).subscribe((data: Array<object>) => {
+        // set done variable to true to show "message submitted"
+        this.done = true;
+        // set the file name for this message to retrieve when calling getFiles()
+        this.message.FileName = this.message.title.replace(/\s/g, '') + '.mp3';
+        // update the list of files in UI by calling getFiles()
+        this.getFiles();
+        this.message.body = '';
+        this.message.title = '';
+      });
+    }
   }
 
   ngOnInit() {
     this.getFiles();
+    this.message.body = '';
+    this.message.title = '';
 
   }
 
@@ -68,6 +85,9 @@ export class TextconverterComponent implements OnInit {
 
   pauseAudio() {
     this.audio.pause();
+  }
+  isEmpty(input: string) {
+    return (input.replace(/\s/g, '').length > 0 ? false : true);
   }
 
   deleteFile(file: File) {
