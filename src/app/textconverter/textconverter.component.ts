@@ -38,11 +38,18 @@ export class TextconverterComponent implements OnInit {
         // set done variable to true to show "message submitted"
         this.done = true;
         // set the file name for this message to retrieve when calling getFiles()
-        this.message.FileName = this.message.title.replace(/\s/g, '') + '.mp3';
-        // update the list of files in UI by calling getFiles()
-        this.getFiles();
+        this.message.FileName = variables.s3Path + this.message.title.replace(/\s/g, '_') + '.mp3';
+        this.tempFile.filePath = this.message.FileName;
+        this.tempFile.title = this.message.title;
+        // update the list of files in UI by adding it to the TS array
+        this.fileList.push(this.tempFile);
+        // clear fields for temp object
         this.message.body = '';
         this.message.title = '';
+        this.message.FileName = '';
+        this.done = false;
+        this.tempFile = new File();
+        console.log(this.fileList);
       });
     }
   }
@@ -91,11 +98,14 @@ export class TextconverterComponent implements OnInit {
   }
 
   deleteFile(file: File) {
-    file.title = file.title.replace(/ /g, '_');
+    this.tempFile = file;
+    this.tempFile.title = file.title.replace(/ /g, '_');
     this.loading = true;
-    this.speech.deleteVoice(file).subscribe((data: Array<object>) => {
-      this.getFiles();
+    this.speech.deleteVoice(this.tempFile).subscribe((data: Array<object>) => {
+      const index = this.fileList.indexOf(file);
+      this.fileList.splice(index, 1);
     }, error => console.log(error));
+    this.loading = false;
 
   }
 

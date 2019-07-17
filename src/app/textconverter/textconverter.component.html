@@ -27,7 +27,7 @@
     </div>
 
     <div *ngIf="this.fileList.length === 0 && !loading">No Notes submitted. Please add notes above!</div>
-    <div *ngIf="this.fileList.length > 0 && !loading">
+    <div *ngIf="this.fileList.length > 0">
       <table class = "table">
         <tr>
           <th scope="col">Title</th>
@@ -40,9 +40,6 @@
           <td><i class="fas fa-trash-alt" (click)="deleteFile(file)"></i></td>
         </tr>
       </table>
-    </div>
-    <div *ngIf="loading">
-      Loading..
     </div>
   </div>
 </div>
