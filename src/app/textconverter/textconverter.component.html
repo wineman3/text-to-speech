@@ -1,45 +1,53 @@
-<div class = "text-converter">
-  <div class = "table-text">
-    <form>
-      <div class="form-group">
-        <input type="text" [(ngModel)]= "this.message.title" name = "title" value = "title" placeholder="Title">
-        <textarea class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.body" name = "comment" placeholder="Comment.."></textarea>
-      </div>
-    </form>
-
-    <button type="submit" class="btn btn-primary" (click) = "addNote()">Add</button>
-    <div *ngIf="done == true">Message submitted.</div>
-    <div *ngIf="done == false">
-      <div *ngIf = "emptyBody == true">
-        <div *ngIf = "emptyTitle == true">
-          Please fill out the title and comment for your note above.
-        </div>
-        <div *ngIf = "emptyTitle == false">
-          Please fill out the comment for your note above.
-        </div>
-      </div>
-      <div *ngIf = "emptyTitle == true && emptyBody == false">
-        Please fill out the title for your note above.
-      </div>
-      <div *ngIf = "sameTitle == true">
-        Error: titles must be unique. Please change title name or delete note that is already using that title. 
-      </div>  
-    </div>
-
-    <div *ngIf="this.fileList.length === 0 && !loading">No Notes submitted. Please add notes above!</div>
-    <div *ngIf="this.fileList.length > 0">
-      <table class = "table">
-        <tr>
-          <th scope="col">Title</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-        <tr *ngFor= "let file of fileList">
-          <td (click) = "edit(file)">{{file.title}}</td>
-          <td><i class="fas fa-play-circle" (click)="playAudio(file.filePath)"></i></td>
-          <td><i class="fas fa-trash-alt" (click)="deleteFile(file)"></i></td>
-        </tr>
-      </table>
+<div class = "wrapper">
+  <div class="d-flex justify-content-center" *ngIf ="!initLoad" id="spinnerwrap">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
+  <div class = "text-converter" *ngIf = "initLoad">
+    <div class = "table-text">
+      <form>
+        <div class="form-group">
+          <input type="text" [(ngModel)]= "this.message.title" name = "title" value = "title" placeholder="Title">
+          <textarea class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.body" name = "comment" placeholder="Comment.."></textarea>
+        </div>
+      </form>
+
+      <button type="submit" class="btn btn-primary" (click) = "addNote()">Add</button>
+      <div *ngIf="done == true">Message submitted.</div>
+      <div *ngIf="done == false">
+        <div *ngIf = "emptyBody == true">
+          <div *ngIf = "emptyTitle == true">
+            Please fill out the title and comment for your note above.
+          </div>
+          <div *ngIf = "emptyTitle == false">
+            Please fill out the comment for your note above.
+          </div>
+        </div>
+        <div *ngIf = "emptyTitle == true && emptyBody == false">
+          Please fill out the title for your note above.
+        </div>
+        <div *ngIf = "sameTitle == true">
+          Error: titles must be unique. Please change title name or delete note that is already using that title. 
+        </div>  
+      </div>
+
+      <div *ngIf="this.fileList.length === 0 && !loading">No Notes submitted. Please add notes above!</div>
+      <div *ngIf="this.fileList.length > 0">
+        <table class = "table">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+          <tr *ngFor= "let file of fileList">
+            <td (click) = "edit(file)">{{file.title}}</td>
+            <td><i class="fas fa-play-circle" (click)="playAudio(file.filePath)"></i></td>
+            <td><i class="fas fa-trash-alt" (click)="deleteFile(file)"></i></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -40,3 +40,23 @@ button:focus {
     border: 1px solid gray;
     box-shadow: none;
 }
+
+.spinner-border {
+    width: 4rem;
+    height: 4rem;
+
+}
+
+#spinnerwrap {
+    position: fixed;
+    width: 100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    top: 0;
+}
+    
+.spinner-border{
+    display: flex;
+    margin: 0 auto;
+}

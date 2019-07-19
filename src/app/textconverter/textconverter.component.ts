@@ -24,6 +24,7 @@ export class TextconverterComponent implements OnInit {
   emptyTitle = false;
   emptyBody  = false;
   sameTitle = false;
+  initLoad = false;
   constructor(private speech: SpeechService) {}
 
   addNote() {
@@ -81,6 +82,7 @@ export class TextconverterComponent implements OnInit {
           this.tempFile = new File();
         }
       });
+      this.initLoad = true;
       this.loading = false;
     });
   }
