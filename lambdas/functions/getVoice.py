@@ -7,7 +7,8 @@ def main(event, context):
     polly_client = boto3.client('polly')
     s3 = boto3.client('s3')
     bucket_name = "texttomp3"
-    response = polly_client.synthesize_speech(VoiceId = 'Joanna', OutputFormat = 'mp3', Text = event['body'])
+    event = json.loads(event['body'])
+    response = polly_client.synthesize_speech(VoiceId = 'Joanna', OutputFormat = 'mp3', Text = event['message'])
     
     stream = response["AudioStream"]
     filename = event['title'].replace(" ", "_") + ".mp3"
@@ -25,5 +26,5 @@ def main(event, context):
             'Access-Control-Allow-Origin' : '*',
             'Access-Control-Allow-Credentials' : 'true'
          },
-        'body': 'Put file '+ filename + 'into text to mp3 bucket.'
+        'body': json.dumps('Put file '+ filename + ' into text to mp3 bucket.')
     }

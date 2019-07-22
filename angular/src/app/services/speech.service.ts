@@ -14,12 +14,12 @@ export class SpeechService {
 
   }
   postData(message: Message) {
-    return this.http.post(variables.postText, JSON.stringify(message));
+    return this.http.post(variables.api, JSON.stringify(message));
   }
   getFiles() {
-    return this.http.get(variables.getFiles);
+    return this.http.get(variables.api);
   }
   deleteVoice(file: File) {
-    return this.http.delete(variables.deleteFiles + file.title);
+    return this.http.delete(variables.api + '/' + file.title);
   }
 }

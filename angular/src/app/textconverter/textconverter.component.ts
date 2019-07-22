@@ -32,7 +32,7 @@ export class TextconverterComponent implements OnInit {
     this.sameTitle = this.fileList.some(x => x.title === this.message.title);
 
     this.emptyTitle = this.isEmpty(this.message.title);
-    this.emptyBody = this.isEmpty(this.message.body);
+    this.emptyBody = this.isEmpty(this.message.message);
     // if they are not empty, add them to the database
     if (!this.emptyBody && !this.emptyTitle && !this.sameTitle) {
       this.speech.postData(this.message).subscribe((data: Array<object>) => {
@@ -45,7 +45,7 @@ export class TextconverterComponent implements OnInit {
         // update the list of files in UI by adding it to the TS array
         this.fileList.push(this.tempFile);
         // clear fields for temp object
-        this.message.body = '';
+        this.message.message = '';
         this.message.title = '';
         this.message.FileName = '';
         this.done = false;
@@ -57,7 +57,7 @@ export class TextconverterComponent implements OnInit {
 
   ngOnInit() {
     this.getFiles();
-    this.message.body = '';
+    this.message.message = '';
     this.message.title = '';
 
   }
@@ -70,6 +70,7 @@ export class TextconverterComponent implements OnInit {
     this.fileList = [];
     this.loading = true;
     this.speech.getFiles().subscribe((data: Array<object>) => {
+      console.log(data);
       data[this.files].forEach((file) => {
         if (!this.fileList.includes(file)) {
           this.tempFile.filePath = variables.s3Path + file;
