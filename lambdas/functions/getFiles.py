@@ -6,9 +6,12 @@ def main(event, context):
     bucket_name = "texttomp3"
     fileList = []
     #iterates through buckets contents for each file name
-    for key in s3.list_objects(Bucket=bucket_name)['Contents']:
-        fileList.append((key['Key']))
-
+    try:
+        for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+            fileList.append((key['Key']))
+    except:
+        #empty bucket
+        pass
     fileList = {
         'files' : fileList
     }
