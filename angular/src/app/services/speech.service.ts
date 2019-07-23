@@ -1,4 +1,3 @@
-import { Message } from './../models/message';
 import { File } from './../models/file';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders } from '@angular/common/http';
@@ -13,8 +12,8 @@ export class SpeechService {
   constructor(private http: HttpClient) {
 
   }
-  postData(message: Message) {
-    return this.http.post(variables.api, JSON.stringify(message));
+  postData(file: File) {
+    return this.http.post(variables.api, JSON.stringify(file));
   }
   getFiles() {
     return this.http.get(variables.api);

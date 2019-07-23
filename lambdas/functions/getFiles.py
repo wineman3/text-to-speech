@@ -2,21 +2,19 @@ import json
 import boto3
 
 def main(event, context):
-    # TODO implement
     s3 = boto3.client('s3')
     bucket_name = "texttomp3"
     fileList = []
-    try:
-        for key in s3.list_objects(Bucket=bucket_name)['Contents']:
-            fileList.append((key['Key']))
-    except:
-        pass
+    #iterates through buckets contents for each file name
+    for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+        fileList.append((key['Key']))
 
     fileList = {
         'files' : fileList
     }
     return {
         'statusCode': 200,
+        #cors headers
         'headers': {
             'Access-Control-Allow-Origin' : '*',
             'Access-Control-Allow-Credentials' : 'true'

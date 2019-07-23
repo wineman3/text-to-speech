@@ -1,6 +1,5 @@
 import { SpeechService } from './../services/speech.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Message } from '../models/message';
 import { File } from '../models/file';
 import { variables } from '../app.variables';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
@@ -11,7 +10,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./textconverter.component.scss']
 })
 export class TextconverterComponent implements OnInit {
-  message: Message = new Message();
+  message: File = new File();
   body = 'body';
   done = false;
   audio = new Audio();
@@ -39,15 +38,15 @@ export class TextconverterComponent implements OnInit {
         // set done variable to true to show "message submitted"
         this.done = true;
         // set the file name for this message to retrieve when calling getFiles()
-        this.message.FileName = variables.s3Path + this.message.title.replace(/\s/g, '_') + '.mp3';
-        this.tempFile.filePath = this.message.FileName;
+        this.message.filePath = variables.s3Path + this.message.title.replace(/\s/g, '_') + '.mp3';
+        this.tempFile.filePath = this.message.filePath;
         this.tempFile.title = this.message.title;
         // update the list of files in UI by adding it to the TS array
         this.fileList.push(this.tempFile);
         // clear fields for temp object
         this.message.message = '';
         this.message.title = '';
-        this.message.FileName = '';
+        this.message.filePath = '';
         this.done = false;
         this.tempFile = new File();
         console.log(this.fileList);
@@ -70,12 +69,10 @@ export class TextconverterComponent implements OnInit {
     this.fileList = [];
     this.loading = true;
     this.speech.getFiles().subscribe((data: Array<object>) => {
-      console.log(data);
       data[this.files].forEach((file) => {
         if (!this.fileList.includes(file)) {
           this.tempFile.filePath = variables.s3Path + file;
-          this.tempIndex = file.indexOf('.mp3');
-          this.tempFile.title = file.substr(0, this.tempIndex);
+          this.tempFile.title = file.substr(0, file.length - 4);
           console.log(this.tempFile.title);
           this.tempFile.title = this.tempFile.title.replace(/_/g, ' ');
           console.log(this.tempFile.title);
