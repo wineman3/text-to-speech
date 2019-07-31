@@ -8,27 +8,32 @@
     <div class = "table-text">
       <form>
         <div class="form-group">
-          <input [attr.disabled]="this.editing ? 'disabled' : null" type="text" [(ngModel)]= "this.message.title" name = "title" value = "title" placeholder="Title">
+          <input [attr.disabled]="this.editing ? 'disabled' : null" type="text" [(ngModel)]= "this.message.title" name = "title" value = "title" placeholder="Title" required />
           <br>  
-          <textarea [attr.disabled]="this.message.title === 'Instructions' ? 'disabled' : null" class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.message" name = "comment" placeholder="Comment.."></textarea>
+          <textarea [attr.disabled]="this.message.title === 'Instructions' ? 'disabled' : null" class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.message" name = "comment" placeholder="Comment.." required></textarea>
           <br>
-          <label for="voice">Select your voice below..</label>
-          <select name="voice" [(ngModel)]= "this.message.voice" ngDefaultControl class="form-control">
-            <option [value]="" selected disabled>Select your voice..</option>
-            <option [value] = "voice" *ngFor="let voice of voices">{{voice}}</option>
+          <!---<label for="voice">Select your voice below..</label>-->
+          <select name="voice" [(ngModel)]= "this.message.voice" ngDefaultControl class="form-control" required>
+            <option value="" selected="selected" disabled = "disabled">Select your voice..</option>
+            <option value = "voice" [value] = "voice" *ngFor="let voice of voices">{{voice}}</option>
           </select>
+          <br>
+          <button *ngIf="!editing" type="submit" class="btn btn-primary" (click) = "addNote()">Add</button>
+          <button *ngIf="editing && message.title != 'Instructions'" (click) = "edit(message)">Submit Edit</button>
+          <button class ="btn btn-secondary" style = "float: right;" (click)="clear()">Clear</button>
+          <button *ngIf="editing && message.title === 'Instructions'" (click) = "clear()">OK</button>
         </div>
       </form>
 
-      <button *ngIf="!editing" type="submit" class="btn btn-primary" (click) = "addNote()">Add</button>
-      <button *ngIf="editing && message.title != 'Instructions'" (click) = "edit(message)">Submit Edit</button>
-      <button class ="btn btn-secondary" style = "float: right;" (click)="clear()">Clear</button>
-      <button *ngIf="editing && message.title === 'Instructions'" (click) = "clear()">OK</button>
+
       <div *ngIf="done == true">Message submitted.</div>
       <div *ngIf="done == false">
         <div *ngIf = "emptyBody == true">
           <div *ngIf = "emptyTitle == true">
             Please fill out the title and comment for your note above.
+          </div>
+          <div *ngIf = "this.message.voice.length < 1">
+            Please select a voice for your note.
           </div>
           <div *ngIf = "emptyTitle == false">
             Please fill out the comment for your note above.

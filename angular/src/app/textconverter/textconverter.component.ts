@@ -35,7 +35,7 @@ export class TextconverterComponent implements OnInit {
     this.emptyTitle = this.isEmpty(this.message.title);
     this.emptyBody = this.isEmpty(this.message.message);
     // if they are not empty, API call
-    if (!this.emptyBody && !this.emptyTitle && !this.sameTitle) {
+    if (!this.emptyBody && !this.emptyTitle && !this.sameTitle && this.message.voice.length > 0) {
       this.speech.postData(this.message).subscribe((data: File) => {
         // set done variable to true to show "message submitted"
         this.done = true;

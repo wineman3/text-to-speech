@@ -28,11 +28,9 @@ When a new note is added in the Angular App, The Angular service makes a POST re
 
 ## Installation
 (Note: the app is also hosted at keatonwineman.com/text-to-speech , as previously mentioned.)
-With this being a serverless backend, I do not have a way to run the API locally, however you can certainly run the Angular App locally! 
- `git clone https://github.com/wineman3/text-to-speech`
+With this being a serverless backend, I do not have a way to run the API locally, however you can certainly run the Angular App locally!  
 
- `cd Angular`
- 
- `npm i`
-
+ `git clone https://github.com/wineman3/text-to-speech`  
+ `cd Angular`  
+ `npm i`  
  `ng serve`
