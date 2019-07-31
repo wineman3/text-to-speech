@@ -18,9 +18,6 @@ export class SpeechService {
   getFiles() {
     return this.http.get(variables.api);
   }
-  getNoteDetails(file: File) {
-    return this.http.get(variables.api + '/' + file.title);
-  }
   deleteVoice(file: File) {
     return this.http.delete(variables.api + '/' + file.title);
   }

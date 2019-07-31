@@ -35,16 +35,6 @@ functions:
             #adds path parameters to pass the title value from the HTTP request path to the lambda function
               paths:
                 title: true
-  getNoteDetails:
-      handler: functions/getNoteDetails.main
-      events:
-        - http:
-            path: notes/{title}
-            method: get
-            cors: true
-            parameters:
-              paths:
-                title: true
   editNote:
     handler: functions/editNote.main
     events:
