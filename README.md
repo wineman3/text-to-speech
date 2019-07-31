@@ -6,7 +6,7 @@ My motivation behind this project was to gain more experience working with cloud
 
 ## URL
 
-[keatonwineman.com/text-to-speech] (keatonwiwneman.com/text-to-speech)
+[keatonwineman.com/text-to-speech](keatonwiwneman.com/text-to-speech)
 
 ## Tools
 
