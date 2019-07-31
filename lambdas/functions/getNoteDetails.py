@@ -6,10 +6,11 @@ def main(event, context):
     #rename title
     title = event['pathParameters']['title']
     #get note details, by title, from Dynamo DB
-    response = dynamo.get_item(TableName='notes', Key={'title':{'S':title}})
-    response = {
-        "title": response['Item']['title']['S'],
-        "message": response['Item']['message']['S']
+    title = title.replace("_", " ")
+    item = dynamo.get_item(TableName='notes', Key={'title':{'S':title}})
+    result = {
+        "title": item['Item']['title']['S'],
+        "message": item['Item']['message']['S']
     }
 
     return {
@@ -18,6 +19,6 @@ def main(event, context):
             'Access-Control-Allow-Credentials' : 'true',
          },
         'statusCode': 200,
-        'body': json.dumps(response)
+        'body': json.dumps(result)
         
     }

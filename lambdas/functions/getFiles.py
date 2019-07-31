@@ -2,16 +2,16 @@ import json
 import boto3
 
 def main(event, context):
-    s3 = boto3.client('s3')
-    bucket_name = "texttomp3"
+    dynamo = boto3.resource('dynamodb')
+    table = dynamo.Table('notes')
+    response = table.scan()
     fileList = []
-    #iterates through buckets contents for each file name
-    try:
-        for key in s3.list_objects(Bucket=bucket_name)['Contents']:
-            fileList.append((key['Key']))
-    except:
-        #empty bucket
-        pass
+    #iterates through db to get each file name
+
+    for x in response['Items']:
+        fileList.append({'title': x['title'], 'message': x['message'], 'version': x['version'], 'voice': x['voice']
+        })
+
     fileList = {
         'files' : fileList
     }

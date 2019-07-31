@@ -45,3 +45,13 @@ functions:
             parameters:
               paths:
                 title: true
+  editNote:
+    handler: functions/editNote.main
+    events:
+      - http:
+          path: notes/{title}
+          method: put
+          cors: true
+          parameters:
+            paths:
+              title: true
