@@ -1,0 +1,47 @@
+# serverless.yml will deploy my AWS resources, by running 'sls deploy' command in /lambdas
+
+service: text-to-speech
+
+provider:
+  name: aws
+  runtime: python3.7
+  role: arn:aws:iam::165885898973:role/TextToSpeechRole
+#lambda functions
+functions:
+  getVoice:
+    handler: functions/getVoice.main
+#sets up my API Gateway to map my Lambda functions to HTTP requests.
+    events:
+     - http:
+         path: notes
+         method: post
+         cors: true
+  getFiles:
+    handler: functions/getFiles.main
+    events:
+      - http:
+          path: notes
+          method: get
+          #can enable CORS from the .yml
+          cors: true
+  deleteVoice:
+      handler: functions/deleteVoice.main
+      events:
+        - http:
+            path: notes/{version}
+            method: delete
+            cors: true
+            parameters:
+            #adds path parameters to pass the title value from the HTTP request path to the lambda function.
+              paths:
+                version: true
+  editNote:
+    handler: functions/editNote.main
+    events:
+      - http:
+          path: notes/{version}
+          method: put
+          cors: true
+          parameters:
+            paths:
+              version: true
