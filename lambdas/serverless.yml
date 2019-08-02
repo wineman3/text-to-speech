@@ -28,20 +28,20 @@ functions:
       handler: functions/deleteVoice.main
       events:
         - http:
-            path: notes/{title}
+            path: notes/{version}
             method: delete
             cors: true
             parameters:
-            #adds path parameters to pass the title value from the HTTP request path to the lambda function
+            #adds path parameters to pass the title value from the HTTP request path to the lambda function.
               paths:
-                title: true
+                version: true
   editNote:
     handler: functions/editNote.main
     events:
       - http:
-          path: notes/{title}
+          path: notes/{version}
           method: put
           cors: true
           parameters:
             paths:
-              title: true
+              version: true

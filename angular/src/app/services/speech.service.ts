@@ -19,9 +19,9 @@ export class SpeechService {
     return this.http.get(variables.api);
   }
   deleteVoice(file: File) {
-    return this.http.delete(variables.api + '/' + file.title);
+    return this.http.delete(variables.api + '/' + file.version);
   }
   editNote(file: File) {
-    return this.http.put(variables.api + '/' + file.title, JSON.stringify(file));
+    return this.http.put(variables.api + '/' + file.version, JSON.stringify(file));
   }
 }

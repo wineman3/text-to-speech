@@ -3,7 +3,7 @@ import boto3
 
 def main(event, context):
     dynamo = boto3.resource('dynamodb')
-    table = dynamo.Table('notes')
+    table = dynamo.Table('mynotes')
     response = table.scan()
     fileList = []
     #iterates through db to get each file name

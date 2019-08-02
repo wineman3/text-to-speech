@@ -4,13 +4,13 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <div class = "text-converter" *ngIf = "initLoad">
+  <div class = "text-converter" *ngIf = "initLoad && !Instructions">
     <div class = "table-text">
       <form>
         <div class="form-group">
           <input [attr.disabled]="this.editing ? 'disabled' : null" type="text" [(ngModel)]= "this.message.title" name = "title" value = "title" placeholder="Title" required />
           <br>  
-          <textarea [attr.disabled]="this.message.title === 'Instructions' ? 'disabled' : null" class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.message" name = "comment" placeholder="Comment.." required></textarea>
+          <textarea class="form-control mt-2" rows="5" id="comment" [(ngModel)]= "this.message.message" name = "comment" placeholder="Comment.." required></textarea>
           <br>
           <!---<label for="voice">Select your voice below..</label>-->
           <select name="voice" [(ngModel)]= "this.message.voice" ngDefaultControl class="form-control" required>
@@ -19,9 +19,8 @@
           </select>
           <br>
           <button *ngIf="!editing" type="submit" class="btn btn-primary" (click) = "addNote()">Add</button>
-          <button *ngIf="editing && message.title != 'Instructions'" (click) = "edit(message)">Submit Edit</button>
+          <button *ngIf="editing" (click) = "edit(message)">Submit Edit</button>
           <button class ="btn btn-secondary" style = "float: right;" (click)="clear()">Clear</button>
-          <button *ngIf="editing && message.title === 'Instructions'" (click) = "clear()">OK</button>
         </div>
       </form>
 
@@ -32,9 +31,6 @@
           <div *ngIf = "emptyTitle == true">
             Please fill out the title and comment for your note above.
           </div>
-          <div *ngIf = "this.message.voice.length < 1">
-            Please select a voice for your note.
-          </div>
           <div *ngIf = "emptyTitle == false">
             Please fill out the comment for your note above.
           </div>
@@ -44,8 +40,12 @@
         </div>
         <div *ngIf = "sameTitle == true">
           Error: titles must be unique. Please change title name or delete note that is already using that title. 
-        </div>  
+        </div> 
+        <div *ngIf = "emptyVoice">
+          Please select a voice for your note.
+        </div> 
       </div>
+      <br>
       <div *ngIf="this.fileList.length === 0 && !loading">No Notes submitted. Please add notes above!</div>
       <div *ngIf="this.fileList.length > 0">
         <table class = "table">
@@ -56,12 +56,26 @@
           </tr>
           <tr *ngFor= "let file of fileList" >
             <td (click) = "getNoteDetails(file)">{{file.title}}</td>
-            <td (click) = "getNoteDetails(file)"><i class="fas fa-play-circle" (click)="playAudio(file.filePath)"></i></td>
-            <td><i *ngIf="file.title !== 'Instructions'"class="fas fa-trash-alt" (click)="deleteFile(file)"></i></td>
+            <td (click) = "getNoteDetails(file)"><i class="fas fa-play-circle" (click)="playAudio(file.filePath)"><small></small></i></td>
+            <td><i class="fas fa-trash-alt" (click)="deleteFile(file)"><small></small></i></td>
           </tr>
         </table>
       </div>
     </div>
+    <div class="mt-5">
+      <i class="fas fa-arrow-left" (click)="this.Instructions = true;"><span class ="iconText">Instructions</span></i>
+    </div>
+  </div>
+  <div class="text-converter" *ngIf= "initLoad && Instructions" style="width: 85%;">
+    <div class="instructions">
+      <h4>Welcome to my text to speech application!</h4>
+      <p>On the next page, you'll see a form at the top where you can add a new note. A note has a title that uniquely identifies it (so two notes cannot have the same title), the message that is converted to a .mp3 file, and you choose a voice that will say your message.</p>
+      <p>When you add a note, the note will display in a table below. You can play the note from the list, delete the note, or click on it to edit it.</p>
+      <p class="note"><span style = "color: red;">PLEASE NOTE:</span> Since this is just a portfolio piece that comes from the perspective of a single user, when you post a note, other people can see the note you posted, so nothing inappropriate please!
+      Click OK to see the application!</p>
+      <button (click)="this.Instructions = false;">OK!</button>
+    </div>
   </div>
 
 </div>
+

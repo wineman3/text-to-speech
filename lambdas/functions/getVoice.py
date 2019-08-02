@@ -12,7 +12,7 @@ def main(event, context):
     response = polly_client.synthesize_speech(VoiceId = event['voice'], OutputFormat = 'mp3', Text = event['message'])
     
     stream = response["AudioStream"]
-    filename = event['title'].replace(" ", "_") + str(version) + ".mp3"
+    filename = str(version) + ".mp3"
     #tries to delete an s3 object, if it exists
     try:
         s3.delete_object(Key=filename, Bucket=bucket_name)
@@ -21,7 +21,7 @@ def main(event, context):
         pass
     #add details to dynamoDB
     dynamo.put_item(
-        TableName = 'notes',
+        TableName = 'mynotes',
         Item = {
             'title': {'S': event['title']},
             'message': {'S': event['message']},

@@ -60,3 +60,21 @@ button:focus {
     display: flex;
     margin: 0 auto;
 }
+.iconText {
+    font-family: Lucida Sans Typewriter,Lucida Console,monaco,Bitstream Vera Sans Mono,monospace;
+}
+
+.note {
+    font-size:10px;
+}
+i {
+    cursor:pointer;
+}
+
+
+@media only screen and (max-width: 380px) {
+    .instructions {
+      font-size: 12px;
+    }
+
+  }
