@@ -7,7 +7,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-textconverter',
   templateUrl: './textconverter.component.html',
-  styleUrls: ['./textconverter.component.scss']
+  styleUrls: ['./textconverter.component.css'],
 })
 export class TextconverterComponent implements OnInit {
   message: File = new File();
@@ -21,30 +21,47 @@ export class TextconverterComponent implements OnInit {
   playing = false;
   loading = true;
   emptyTitle = false;
-  emptyBody  = false;
+  emptyBody = false;
   sameTitle = false;
   initLoad = false;
   editing = false;
   Instructions = true;
   emptyVoice = false;
-  voices = ['Ivy', 'Joanna', 'Kendra', 'Kimberly', 'Salli', 'Joey', 'Justin', 'Matthew', 'Amy', 'Emma', 'Brian'];
+  voices = [
+    'Ivy',
+    'Joanna',
+    'Kendra',
+    'Kimberly',
+    'Salli',
+    'Joey',
+    'Justin',
+    'Matthew',
+    'Amy',
+    'Emma',
+    'Brian',
+  ];
   constructor(private speech: SpeechService) {}
   async addNote() {
     this.editing = false;
     // check if title and body are empty
-    this.sameTitle = this.fileList.some(x => x.title === this.message.title);
-    console.log(this.message);
+    this.sameTitle = this.fileList.some((x) => x.title === this.message.title);
     this.emptyTitle = this.isEmpty(this.message.title);
     this.emptyBody = this.isEmpty(this.message.message);
     this.emptyVoice = this.voices.indexOf(this.message.voice) === -1;
     // if they are not empty, API call
-    if (!this.emptyBody && !this.emptyTitle && !this.sameTitle && !this.emptyVoice) {
+    if (
+      !this.emptyBody &&
+      !this.emptyTitle &&
+      !this.sameTitle &&
+      !this.emptyVoice
+    ) {
       this.speech.postData(this.message).subscribe((data: File) => {
         // set done variable to true to show "message submitted"
         this.done = true;
         this.tempFile.version = data.version;
         // set the file name for this message to retrieve when calling getFiles()
-        this.message.filePath = variables.s3Path + this.tempFile.version + '.mp3';
+        this.message.filePath =
+          variables.s3Path + this.tempFile.version + '.mp3';
         this.tempFile.filePath = this.message.filePath;
         this.tempFile.title = this.message.title;
         this.tempFile.message = this.message.message;
@@ -64,37 +81,29 @@ export class TextconverterComponent implements OnInit {
     }
   }
 
-
-
   ngOnInit() {
     this.Instructions = true;
     this.getFiles();
     this.message.message = '';
     this.message.title = '';
     this.message.voice = '';
-
   }
 
   edit(file: File) {
-    console.log(file);
-    console.log(this.fileList);
     const index = this.findIndexOfTitle(this.fileList, file.title);
-    console.log(index);
-    this.speech.editNote(file).subscribe((data: File) => {
-      console.log(this.fileList[index]);
-      console.log(data.title);
-      this.fileList[index] = new File();
-      this.fileList[index].title = data.title;
-      this.fileList[index].message = data.message;
-      this.fileList[index].version = data.version;
-      this.fileList[index].voice = data.voice;
-      console.log(this.fileList[index]);
-      // update.message = data.message;
-      // update.version = data.version;
-      this.fileList[index].filePath = variables.s3Path + data.version + '.mp3';
-      console.log(this.fileList);
-      this.clear();
-    }, error => console.log(error));
+    this.speech.editNote(file).subscribe(
+      (data: File) => {
+        this.fileList[index] = new File();
+        this.fileList[index].title = data.title;
+        this.fileList[index].message = data.message;
+        this.fileList[index].version = data.version;
+        this.fileList[index].voice = data.voice;
+        this.fileList[index].filePath =
+          variables.s3Path + data.version + '.mp3';
+        this.clear();
+      },
+      (error) => console.log(error)
+    );
   }
 
   clear() {
@@ -108,19 +117,22 @@ export class TextconverterComponent implements OnInit {
   getFiles() {
     this.fileList = [];
     this.loading = true;
-    this.speech.getFiles().subscribe((data: File[]) => {
-      this.fileList = data[this.files];
-      Array.prototype.forEach.call(this.fileList, file => {
+    this.speech.getFiles().subscribe(
+      (data: File[]) => {
+        this.fileList = data[this.files];
+        Array.prototype.forEach.call(this.fileList, (file) => {
           if (file.title !== 'Instructions') {
             file.filePath = variables.s3Path + file.version + '.mp3';
           } else {
-            file.filePath = variables.s3Path + file.title.replace(/ /g, '_') + '0.mp3';
+            file.filePath =
+              variables.s3Path + file.title.replace(/ /g, '_') + '0.mp3';
           }
         });
-      this.initLoad = true;
-      this.loading = false;
-      console.log(this.fileList); }
-      , error => console.log(error));
+        this.initLoad = true;
+        this.loading = false;
+      },
+      (error) => console.log(error)
+    );
   }
   playAudio(filePath: string) {
     this.audio.src = filePath;
@@ -132,7 +144,7 @@ export class TextconverterComponent implements OnInit {
     this.audio.pause();
   }
   isEmpty(input: string) {
-    return (input.replace(/\s/g, '').length > 0 ? false : true);
+    return input.replace(/\s/g, '').length > 0 ? false : true;
   }
 
   deleteFile(file: File) {
@@ -143,15 +155,17 @@ export class TextconverterComponent implements OnInit {
     this.tempFile.voice = file.voice;
     this.tempFile.title = this.tempFile.title.replace(/ /g, '_');
     this.loading = true;
-    this.speech.deleteVoice(this.tempFile).subscribe((data: Array<object>) => {
-      const index = this.fileList.indexOf(file);
-      this.fileList.splice(index, 1);
-      this.message.title = '';
-      this.message.message = '';
-      this.message.voice = '';
-    }, error => console.log(error));
+    this.speech.deleteVoice(this.tempFile).subscribe(
+      (data: Array<object>) => {
+        const index = this.fileList.indexOf(file);
+        this.fileList.splice(index, 1);
+        this.message.title = '';
+        this.message.message = '';
+        this.message.voice = '';
+      },
+      (error) => console.log(error)
+    );
     this.loading = false;
-
   }
 
   getNoteDetails(file: File) {
@@ -159,21 +173,19 @@ export class TextconverterComponent implements OnInit {
     this.message.message = file.message;
     this.message.version = file.version;
     this.message.voice = file.voice;
-    console.log(this.message);
     this.editing = true;
   }
 
   // simple delay function to delay "message submitted from disappearing."
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   findIndexOfTitle(array: File[], title: string) {
     for (let i = 0; i < array.length; i += 1) {
-        if (array[i].title === title) {
-            return i;
-        }
+      if (array[i].title === title) {
+        return i;
+      }
     }
     return -1;
   }
-
 }

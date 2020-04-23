@@ -5,17 +5,17 @@ service: text-to-speech
 provider:
   name: aws
   runtime: python3.7
-  role: arn:aws:iam::165885898973:role/TextToSpeechRole
+  role: arn:aws:iam::869061816024:role/text-to-speech-role
 #lambda functions
 functions:
   getVoice:
     handler: functions/getVoice.main
-#sets up my API Gateway to map my Lambda functions to HTTP requests.
+    #sets up my API Gateway to map my Lambda functions to HTTP requests.
     events:
-     - http:
-         path: notes
-         method: post
-         cors: true
+      - http:
+          path: notes
+          method: post
+          cors: true
   getFiles:
     handler: functions/getFiles.main
     events:
@@ -25,14 +25,15 @@ functions:
           #can enable CORS from the .yml
           cors: true
   deleteVoice:
-      handler: functions/deleteVoice.main
-      events:
-        - http:
-            path: notes/{version}
-            method: delete
-            cors: true
+    handler: functions/deleteVoice.main
+    events:
+      - http:
+          path: notes/{version}
+          method: delete
+          cors: true
+          request:
             parameters:
-            #adds path parameters to pass the title value from the HTTP request path to the lambda function.
+              #adds path parameters to pass the title value from the HTTP request path to the lambda function.
               paths:
                 version: true
   editNote:
@@ -42,6 +43,7 @@ functions:
           path: notes/{version}
           method: put
           cors: true
-          parameters:
-            paths:
-              version: true
+          request:
+            parameters:
+              paths:
+                version: true

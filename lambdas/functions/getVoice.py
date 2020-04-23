@@ -6,7 +6,7 @@ def main(event, context):
     polly_client = boto3.client('polly')
     s3 = boto3.client('s3')
     dynamo = boto3.client('dynamodb')
-    bucket_name = "kwtexttospeech"
+    bucket_name = "text-to-speech-kw"
     event = json.loads(event['body'])
     version = str(uuid.uuid4())
     response = polly_client.synthesize_speech(VoiceId = event['voice'], OutputFormat = 'mp3', Text = event['message'])
@@ -37,7 +37,8 @@ def main(event, context):
         'statusCode': 200,
         'headers': {
             'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Credentials' : 'true'
+            'Access-Control-Allow-Credentials' : 'true',
+            'Access-Control-Expose-Headers': '*'
          },
         'body': json.dumps({'version': version})
     }

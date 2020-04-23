@@ -4,7 +4,7 @@ def main(event, context):
     s3 = boto3.client('s3')
     dynamodb = boto3.client('dynamodb')
     polly_client = boto3.client('polly')
-    bucket_name = "kwtexttospeech"
+    bucket_name = "text-to-speech-kw"
     old_version = event['pathParameters']['version']
     event = json.loads(event['body'])
     version = str(uuid.uuid4())
@@ -41,7 +41,9 @@ def main(event, context):
         #cors headers
         'headers': {
             'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Credentials' : 'true'
+            'Access-Control-Allow-Credentials' : 'true',
+            'Access-Control-Expose-Headers': '*',
+            'Access-Control-Expose-Headers': '*'
          },
         'body': json.dumps(event)
         
