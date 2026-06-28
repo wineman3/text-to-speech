@@ -1,5 +1,5 @@
 {
-  "buildCommand": "ng build --prod",
+  "buildCommand": "",
   "outputDirectory": "dist/text-to-speech",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
